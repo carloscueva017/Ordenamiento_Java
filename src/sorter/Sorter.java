@@ -1,85 +1,94 @@
 package sorter;
 
 import java.util.Arrays;
-import java.util.Date;
 
 public class Sorter {
-	public static long sort(int[] array, SortOrder order, SortingMethod method){		
-		switch(method){
+	public static long sort(int[] array, SortOrder order, SortingMethod method) {
+		long operationsPerformed = 0;
+
+		switch (method) {
 		case BUBBLE_SORT:
-			bubbleSort(array, order);
+			operationsPerformed = bubbleSort(array, order);
+			break;
 		case MERGE_SORT:
-			mergeSort(array, order);
+			operationsPerformed = mergeSort(array, order);
+			break;
 		}
-		
-		return 0;
+
+		return operationsPerformed;
 	}
-	
-	private static long bubbleSort(int[] array, SortOrder order){
-		long startDate= (new Date()).getTime();
+
+	private static long bubbleSort(int[] array, SortOrder order) {
+		long operationsPerformed = 0;
 		
-		for(int i=0; i<array.length; i++){
-			for(int j=i+1; j<array.length; j++){
-				switch(order){
+		for (int i = 0; i < array.length; i++) {
+			operationsPerformed++;
+			for (int j = 0; j < array.length; j++) {
+				operationsPerformed++;
+				switch (order) {
 				case ASCENDANT:
-					if(array[i]>array[j]){
-						int aux= array[i];
-						array[i]=array[j];
-						array[j]=aux;
+					if (array[i] > array[j]) {
+						int aux = array[i];
+						array[i] = array[j];
+						array[j] = aux;
 					}
 					break;
 				case DESCENDANT:
-					if(array[i]<array[j]){
-						int aux= array[i];
-						array[i]=array[j];
-						array[j]=aux;
+					if (array[i] < array[j]) {
+						int aux = array[i];
+						array[i] = array[j];
+						array[j] = aux;
 					}
 				}
-				 
+
 			}
 		}
-		
-		return 0;
+
+		return operationsPerformed;
 	}
-	
-	private static long mergeSort(int[] array, SortOrder order){
-		
-		int[] left= Arrays.copyOfRange(array, 0, (array.length/2));
-		int[] right= Arrays.copyOfRange(array, (array.length/2), array.length);
-		
-		if(left.length>1) mergeSort(left, order);
-		if(right.length>1) mergeSort(right, order);
-		
-		for(int x=0, i=0, j=0; x<array.length; x++){
-			if(i==left.length){
-				array[x]= right[j];
+
+	private static long mergeSort(int[] array, SortOrder order) {
+		long operationsPerformed = 0;
+
+		int[] left = Arrays.copyOfRange(array, 0, (array.length / 2));
+		int[] right = Arrays.copyOfRange(array, (array.length / 2), array.length);
+
+		if (left.length > 1)
+			operationsPerformed += mergeSort(left, order);
+		if (right.length > 1)
+			operationsPerformed += mergeSort(right, order);
+
+		for (int x = 0, i = 0, j = 0; x < array.length; x++) {
+			operationsPerformed++;
+			if (i == left.length) {
+				array[x] = right[j];
 				j++;
-			}else if(j==right.length){
-				array[x]= left[i];
+			} else if (j == right.length) {
+				array[x] = left[i];
 				i++;
-			}else{
-				switch(order){
-					case ASCENDANT:
-						if(left[i]<right[j]){
-							array[x]=left[i];
-							i++;
-						}else{
-							array[x]=right[j];
-							j++;
-						}
-						break;
-					case DESCENDANT:
-						if(left[i]>right[j]){
-							array[x]=left[i];
-							i++;
-						}else{
-							array[x]=right[j];
-							j++;
-						}
+			} else {
+				switch (order) {
+				case ASCENDANT:
+					if (left[i] < right[j]) {
+						array[x] = left[i];
+						i++;
+					} else {
+						array[x] = right[j];
+						j++;
+					}
+					break;
+				case DESCENDANT:
+					if (left[i] > right[j]) {
+						array[x] = left[i];
+						i++;
+					} else {
+						array[x] = right[j];
+						j++;
+					}
 				}
 			}
 		}
-		
-		return 0;
+
+		return operationsPerformed;
 	}
 }
